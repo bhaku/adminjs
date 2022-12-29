@@ -60,7 +60,7 @@ jobs:
           || contains(github.ref, 'refs/heads/next-major')
           || contains(github.ref, 'refs/heads/beta')
           || contains(github.ref, 'refs/heads/dev')
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: lib
           path: lib
@@ -71,7 +71,7 @@ jobs:
           || contains(github.ref, 'refs/heads/next-major')
           || contains(github.ref, 'refs/heads/beta')
           || contains(github.ref, 'refs/heads/dev')
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: types
           path: types
@@ -82,7 +82,7 @@ jobs:
           || contains(github.ref, 'refs/heads/next-major')
           || contains(github.ref, 'refs/heads/beta')
           || contains(github.ref, 'refs/heads/dev')
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: bundle
           path: src/frontend/assets/scripts
@@ -228,31 +228,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: "14.x"
-      - uses: actions/cache@v1
-        id: yarn-cache
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-
+          node-version: '14'
+          cache: 'yarn'
       - name: Install
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
       - name: Download Build
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: lib
       - name: Download Types
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: types
       - name: Download Bundle
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: bundle
       - name: Release
